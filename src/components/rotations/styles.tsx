@@ -20,6 +20,7 @@ export const Rotation = styled.div<{ isInvalid: boolean }>`
     'dep dep arrow arrow arr arr'
     'depTime depTime arrow arrow arrTime arrTime';
   cursor: pointer;
+  background: #fff;
   &:hover {
     background: #f1f1f1;
   }

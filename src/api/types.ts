@@ -13,6 +13,7 @@ export type AxiosResponse<T> = {
   data: T[];
   error: any;
   loading: boolean;
+  loadMore: any;
 };
 
 export type Aircraft = {

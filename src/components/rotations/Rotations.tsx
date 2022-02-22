@@ -13,7 +13,6 @@ const Rotations = ({
   dRef: any;
   children: React.ReactNode;
 }) => {
-  console.log(rotation?.map((r) => r.isInvalid));
   return (
     <S.Rotations>
       <S.Header>Rotation {aircraft}</S.Header>

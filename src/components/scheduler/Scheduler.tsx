@@ -20,12 +20,16 @@ const Scheduler = () => {
   const [availableFlights, setAvailableFlights] = useState<Flight[]>([]);
   const [rotation, setRotation] = useState<Flight[]>([]);
 
-  const { data: flights } = useFlights();
+  const { data: flights, loadMore: moreFlights } = useFlights();
   const { data: aircrafts } = useAircrafts();
 
   useEffect(() => {
-    setAvailableFlights(flights);
+    setAvailableFlights(availableFlights.concat(flights));
   }, [flights]);
+
+  const handleMoreFlights = () => {
+    moreFlights();
+  };
 
   const getState = (dropId: string) => {
     const droppables: { [id: string]: Flight[] } = {
@@ -92,7 +96,10 @@ const Scheduler = () => {
         </Droppable>
         <Droppable droppableId="flights">
           {(provided: DroppableProvided) => (
-            <Flights dRef={provided.innerRef} flights={availableFlights}>
+            <Flights
+              flights={availableFlights}
+              dRef={provided.innerRef}
+              handleMoreFlights={handleMoreFlights}>
               {provided.placeholder}
             </Flights>
           )}
