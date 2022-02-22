@@ -30,6 +30,7 @@ export type Flight = {
   arrivaltime: number;
   readable_departure: string;
   readable_arrival: string;
+  isInvalid: boolean;
 };
 
 export type Location = {

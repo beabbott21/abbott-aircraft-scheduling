@@ -4,18 +4,17 @@ import * as S from '../shared/styles';
 export const Header = S.ColumnHeader;
 export const List = styled(S.List)`
   overflow: scroll;
-  height: 57vh;
+  height: 60vh;
 `;
 export const Rotations = styled.div`
   grid-area: rotations;
-  height: 60vh;
+  height: 64vh;
   width: 100%;
 `;
 
-export const Rotation = styled.div`
+export const Rotation = styled.div<{ isInvalid: boolean }>`
   display: grid;
-  padding: 0 8px;
-  border-bottom: 1px solid #ccc;
+  padding: 8px;
   grid-template-areas:
     'ident ident ident . . .'
     'dep dep arrow arrow arr arr'
@@ -24,6 +23,7 @@ export const Rotation = styled.div`
   &:hover {
     background: #f1f1f1;
   }
+  border: ${({ isInvalid }) => (isInvalid ? '1px solid red' : '1px solid #ccc')};
 `;
 
 const RotationDetail = styled.span`

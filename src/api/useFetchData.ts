@@ -30,7 +30,6 @@ const useFetchData = <T>(
         params: { limit: 10 }
       })
       .then((res: ApiResponse) => {
-        console.log(res);
         setData(res.data.data);
       })
       .catch((err) => setError(err))

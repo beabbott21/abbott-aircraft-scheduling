@@ -13,15 +13,17 @@ const Rotations = ({
   dRef: any;
   children: React.ReactNode;
 }) => {
+  console.log(rotation?.map((r) => r.isInvalid));
   return (
     <S.Rotations>
       <S.Header>Rotation {aircraft}</S.Header>
       <S.List ref={dRef}>
         {rotation?.map(
-          ({ id, origin, readable_departure, destination, readable_arrival }, index) => (
+          ({ id, origin, readable_departure, destination, readable_arrival, isInvalid }, index) => (
             <Draggable key={id} draggableId={id} index={index}>
               {(provided: DraggableProvided) => (
                 <S.Rotation
+                  isInvalid={isInvalid}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}>

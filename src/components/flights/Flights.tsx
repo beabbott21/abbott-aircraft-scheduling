@@ -12,7 +12,6 @@ const Flights = ({
   dRef: any;
   children: React.ReactNode;
 }) => {
-  console.log(flights);
   return (
     <S.Flights>
       <S.Header>Flights</S.Header>

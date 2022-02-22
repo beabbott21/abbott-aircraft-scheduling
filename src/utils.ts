@@ -6,11 +6,6 @@ export function move(
   droppableSource: Location,
   droppableDestination: Location
 ) {
-  console.log('ds', droppableSource);
-  console.log('dd', droppableDestination);
-  console.log('s', source);
-  console.log('d', destination);
-
   const sourceClone = [...source];
   const destClone = [...destination];
   const [removed] = sourceClone.splice(droppableSource.index, 1);
@@ -23,7 +18,6 @@ export function move(
   };
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
-  console.log('res', result);
   return result;
 }
 
@@ -34,3 +28,25 @@ export const reorder = <T>(list: T[], startIndex: number, endIndex: number) => {
 
   return result;
 };
+
+export const getInvalidPlacements = (rotation: Flight[]): number[] => {
+  const invalidPlacements: number[] = [];
+  for (let i = 1; i < rotation.length; i++) {
+    const { origin, departuretime } = rotation[i];
+    const { destination: prevDest, arrivaltime: prevArr } = rotation[i - 1];
+    if (prevDest !== origin || departuretime - prevArr < 1200) {
+      invalidPlacements.push(i);
+    }
+  }
+  return invalidPlacements;
+};
+
+export const assignInvalids = (rotation: Flight[], invalids: number[]) =>
+  rotation.map((r, i) => ({ ...r, ...{ isInvalid: invalids.includes(i) } }));
+
+export const getSegmentWidth = (dep: number, arr: number) => (arr - dep) / 864;
+
+export const getUtilisation = (rotation: Flight[]) =>
+  Math.round(
+    rotation.reduce<number>((total, r) => total + (r.arrivaltime - r.departuretime) + 1200, 0) / 864
+  );

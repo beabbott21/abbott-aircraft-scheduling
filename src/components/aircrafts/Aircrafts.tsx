@@ -1,15 +1,18 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Aircraft } from '../../api/types';
+import { Aircraft, Flight } from '../../api/types';
 import * as S from './styles';
+import { getUtilisation } from '../../utils';
 
 const Aircrafts = ({
   aircrafts,
   selectedAircraft,
-  selectAircraft
+  selectAircraft,
+  rotation
 }: {
   aircrafts: Aircraft[];
   selectedAircraft: string;
   selectAircraft: Dispatch<SetStateAction<string>>;
+  rotation: Flight[];
 }) => {
   return (
     <S.Aircrafts>
@@ -22,7 +25,7 @@ const Aircrafts = ({
             isSelected={selectedAircraft === aircraft.ident}>
             <S.Utilization>
               <span>{aircraft.ident}</span>
-              <span>58%</span>
+              <span>{getUtilisation(rotation)}%</span>
             </S.Utilization>
           </S.Aircraft>
         ))}

@@ -7,8 +7,8 @@ import Aircrafts from '../aircrafts/Aircrafts';
 import Timeline from '../timeline/Timeline';
 import { useAircrafts, useFlights } from '../../api/useFetchData';
 import { DragDropContext, Droppable, DroppableProvided, DropResult } from 'react-beautiful-dnd';
-import { AxiosResponse, Flight } from '../../api/types';
-import { move, reorder } from '../../utils';
+import { Flight } from '../../api/types';
+import { assignInvalids, getInvalidPlacements, move, reorder } from '../../utils';
 
 const Scheduler = () => {
   const today = new Date();
@@ -21,11 +21,9 @@ const Scheduler = () => {
 
   const { data: flights, error: flightError, loading: flightsLoading } = useFlights();
   const { data: aircrafts, error: aircraftError, loading: aircraftLoading } = useAircrafts();
-  console.log(availableFlights);
 
   useEffect(() => {
     setAvailableFlights(flights);
-    console.log('flights effect');
   }, [flights]);
 
   const getState = (dropId: string) => {
@@ -35,6 +33,8 @@ const Scheduler = () => {
     };
     return droppables[dropId];
   };
+
+  console.log(rotation);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -47,14 +47,20 @@ const Scheduler = () => {
       return;
     }
 
+    // drag within same list
     if (source.droppableId === destination.droppableId) {
-      const items = reorder<Flight>(getState(source.droppableId), source.index, destination.index);
-
+      const flights = reorder<Flight>(
+        getState(source.droppableId),
+        source.index,
+        destination.index
+      );
+      console.log(getInvalidPlacements(flights));
       if (source.droppableId === 'flights') {
-        setAvailableFlights(items);
+        setAvailableFlights(flights);
       } else {
-        setRotation(items);
+        setRotation(assignInvalids(flights, getInvalidPlacements(flights)));
       }
+      // drag to new list
     } else {
       const result = move(
         getState(source.droppableId),
@@ -62,9 +68,13 @@ const Scheduler = () => {
         source,
         destination
       );
-      console.log(result['flights'], result['rotations']);
+      const rotation = assignInvalids(
+        result['rotations'],
+        getInvalidPlacements(result['rotations'])
+      );
+
       setAvailableFlights(result['flights']);
-      setRotation(result['rotations']);
+      setRotation(assignInvalids(result['rotations'], getInvalidPlacements(result['rotations'])));
     }
   };
 
@@ -75,8 +85,8 @@ const Scheduler = () => {
         aircrafts={aircrafts}
         selectedAircraft={selectedAircraft}
         selectAircraft={setSelectedAircraft}
+        rotation={rotation}
       />
-      <Timeline />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="rotations">
           {(provided: DroppableProvided) => (
@@ -93,6 +103,7 @@ const Scheduler = () => {
           )}
         </Droppable>
       </DragDropContext>
+      <Timeline rotation={rotation} />
     </S.SchedulerPage>
   );
 };
