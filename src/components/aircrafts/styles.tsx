@@ -19,7 +19,7 @@ export const Aircraft = styled.div<{ isSelected: boolean }>`
   &:hover {
     background: #f1f1f1;
   }
-  background: ${(isSelected) => (isSelected ? '#ccdef0' : '#fff')};
+  background: ${({ isSelected }) => (isSelected ? '#ccdef0' : '#fff')};
 `;
 
 export const Utilization = styled.div`

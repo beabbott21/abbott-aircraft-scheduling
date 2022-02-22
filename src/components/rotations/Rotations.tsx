@@ -17,24 +17,32 @@ const Rotations = ({
     <S.Rotations>
       <S.Header>Rotation {aircraft}</S.Header>
       <S.List ref={dRef}>
-        {rotation?.map(
-          ({ id, origin, readable_departure, destination, readable_arrival, isInvalid }, index) => (
-            <Draggable key={id} draggableId={id} index={index}>
-              {(provided: DraggableProvided) => (
-                <S.Rotation
-                  isInvalid={isInvalid}
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <S.Ident>Flight: {id}</S.Ident>
-                  <S.Dep>{origin}</S.Dep>
-                  <S.DepTime>{readable_departure}</S.DepTime>
-                  <S.Arr>{destination}</S.Arr>
-                  <S.ArrTime>{readable_arrival}</S.ArrTime>
-                </S.Rotation>
-              )}
-            </Draggable>
+        {aircraft ? (
+          rotation?.map(
+            (
+              { id, origin, readable_departure, destination, readable_arrival, isInvalid },
+              index
+            ) => (
+              <Draggable key={id} draggableId={id} index={index}>
+                {(provided: DraggableProvided, snapshot: any) => (
+                  <S.Rotation
+                    isInvalid={isInvalid}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    isDragging={snapshot.isDragging}>
+                    <S.Ident>Flight: {id}</S.Ident>
+                    <S.Dep>{origin}</S.Dep>
+                    <S.DepTime>{readable_departure}</S.DepTime>
+                    <S.Arr>{destination}</S.Arr>
+                    <S.ArrTime>{readable_arrival}</S.ArrTime>
+                  </S.Rotation>
+                )}
+              </Draggable>
+            )
           )
+        ) : (
+          <S.Message>Please Select an Aircraft</S.Message>
         )}
         {children}
       </S.List>

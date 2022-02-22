@@ -46,7 +46,10 @@ export const assignInvalids = (rotation: Flight[], invalids: number[]) =>
 
 export const getSegmentWidth = (dep: number, arr: number) => (arr - dep) / 864;
 
+// 20 mins (the minimum downtime between flights) comes for free after each flight.
+// Anything past that will count as wasted idle time with regard to utilization.
+// Maximum utilization is considered 65400 seconds. ie. 05:50-23:59:59
 export const getUtilisation = (rotation: Flight[]) =>
   Math.round(
-    rotation.reduce<number>((total, r) => total + (r.arrivaltime - r.departuretime) + 1200, 0) / 864
+    rotation.reduce<number>((total, r) => total + (r.arrivaltime - r.departuretime) + 1200, 0) / 654
   );

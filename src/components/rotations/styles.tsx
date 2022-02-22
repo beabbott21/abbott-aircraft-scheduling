@@ -12,7 +12,16 @@ export const Rotations = styled.div`
   width: 100%;
 `;
 
-export const Rotation = styled.div<{ isInvalid: boolean }>`
+export const Message = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+export const Rotation = styled.div<{ isInvalid: boolean; isDragging: boolean }>`
   display: grid;
   padding: 8px;
   grid-template-areas:
@@ -25,6 +34,7 @@ export const Rotation = styled.div<{ isInvalid: boolean }>`
     background: #f1f1f1;
   }
   border: ${({ isInvalid }) => (isInvalid ? '1px solid red' : '1px solid #ccc')};
+  background: ${({ isDragging }) => (isDragging ? '#ccdef0' : '#fff')};
 `;
 
 const RotationDetail = styled.span`

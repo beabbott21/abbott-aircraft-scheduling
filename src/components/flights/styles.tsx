@@ -27,7 +27,7 @@ export const Flight = styled.div<{ isDragging: boolean }>`
   &:hover {
     background: #f1f1f1;
   }
-  background: ${(isDragging) => (isDragging ? '#fff' : '#ccdef0')};
+  background: ${({ isDragging }) => (isDragging ? '#ccdef0' : '#fff')};
 `;
 
 const FlightDetail = styled.span`
