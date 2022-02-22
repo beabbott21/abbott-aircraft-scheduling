@@ -14,13 +14,14 @@ const Scheduler = () => {
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
+
   const [date, setDate] = useState<Date>(tomorrow);
   const [selectedAircraft, setSelectedAircraft] = useState<string>('');
   const [availableFlights, setAvailableFlights] = useState<Flight[]>([]);
   const [rotation, setRotation] = useState<Flight[]>([]);
 
-  const { data: flights, error: flightError, loading: flightsLoading } = useFlights();
-  const { data: aircrafts, error: aircraftError, loading: aircraftLoading } = useAircrafts();
+  const { data: flights } = useFlights();
+  const { data: aircrafts } = useAircrafts();
 
   useEffect(() => {
     setAvailableFlights(flights);
@@ -33,8 +34,6 @@ const Scheduler = () => {
     };
     return droppables[dropId];
   };
-
-  console.log(rotation);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -67,10 +66,6 @@ const Scheduler = () => {
         getState(destination.droppableId),
         source,
         destination
-      );
-      const rotation = assignInvalids(
-        result['rotations'],
-        getInvalidPlacements(result['rotations'])
       );
 
       setAvailableFlights(result['flights']);

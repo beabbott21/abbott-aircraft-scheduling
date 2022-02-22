@@ -14,6 +14,7 @@ export const Flight = styled.div<{ isDragging: boolean }>`
   display: grid;
   padding: 0 8px;
   border-bottom: 1px solid #ccc;
+  background: #fff;
   grid-template-areas:
     'ident ident ident'
     'dep . arr'
@@ -22,7 +23,7 @@ export const Flight = styled.div<{ isDragging: boolean }>`
   &:hover {
     background: #f1f1f1;
   }
-  background: ${(isDragging) => (isDragging ? '#ccdef0' : '#fff')};
+  background: ${(isDragging) => (isDragging ? '#fff' : '#ccdef0')};
 `;
 
 const FlightDetail = styled.span`
